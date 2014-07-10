@@ -282,13 +282,13 @@ static inline cmplx cpolar(double r, double t)
 // Auxiliary routines to compute other special functions based on w(z)
 
 // compute erfcx(z) = exp(z^2) erfz(z)
-cmplx FADDEEVA(erfcx)(cmplx z, double relerr)
+DLLEXPORT cmplx FADDEEVA(erfcx)(cmplx z, double relerr)
 {
   return FADDEEVA(w)(C(-cimag(z), creal(z)), relerr);
 }
 
 // compute the error function erf(x)
-double FADDEEVA_RE(erf)(double x)
+DLLEXPORT double FADDEEVA_RE(erf)(double x)
 {
 #if !defined(__cplusplus)
   return erf(x); // C99 supplies erf in math.h
@@ -320,7 +320,7 @@ double FADDEEVA_RE(erf)(double x)
 }
 
 // compute the error function erf(z)
-cmplx FADDEEVA(erf)(cmplx z, double relerr)
+DLLEXPORT cmplx FADDEEVA(erf)(cmplx z, double relerr)
 {
   double x = creal(z), y = cimag(z);
 
@@ -412,21 +412,21 @@ cmplx FADDEEVA(erf)(cmplx z, double relerr)
 }
 
 // erfi(z) = -i erf(iz)
-cmplx FADDEEVA(erfi)(cmplx z, double relerr)
+DLLEXPORT cmplx FADDEEVA(erfi)(cmplx z, double relerr)
 {
   cmplx e = FADDEEVA(erf)(C(-cimag(z),creal(z)), relerr);
   return C(cimag(e), -creal(e));
 }
 
 // erfi(x) = -i erf(ix)
-double FADDEEVA_RE(erfi)(double x)
+DLLEXPORT double FADDEEVA_RE(erfi)(double x)
 {
   return x*x > 720 ? (x > 0 ? Inf : -Inf)
     : exp(x*x) * FADDEEVA(w_im)(x);
 }
 
 // erfc(x) = 1 - erf(x)
-double FADDEEVA_RE(erfc)(double x)
+DLLEXPORT double FADDEEVA_RE(erfc)(double x)
 {
 #if !defined(__cplusplus)
   return erfc(x); // C99 supplies erfc in math.h
@@ -441,7 +441,7 @@ double FADDEEVA_RE(erfc)(double x)
 }
 
 // erfc(z) = 1 - erf(z)
-cmplx FADDEEVA(erfc)(cmplx z, double relerr)
+DLLEXPORT cmplx FADDEEVA(erfc)(cmplx z, double relerr)
 {
   double x = creal(z), y = cimag(z);
 
@@ -475,14 +475,14 @@ cmplx FADDEEVA(erfc)(cmplx z, double relerr)
 }
 
 // compute Dawson(x) = sqrt(pi)/2  *  exp(-x^2) * erfi(x)
-double FADDEEVA_RE(Dawson)(double x)
+DLLEXPORT double FADDEEVA_RE(Dawson)(double x)
 {
   const double spi2 = 0.8862269254527580136490837416705725913990; // sqrt(pi)/2
   return spi2 * FADDEEVA(w_im)(x);
 }
 
 // compute Dawson(z) = sqrt(pi)/2  *  exp(-z^2) * erfi(z)
-cmplx FADDEEVA(Dawson)(cmplx z, double relerr)
+DLLEXPORT cmplx FADDEEVA(Dawson)(cmplx z, double relerr)
 {
   const double spi2 = 0.8862269254527580136490837416705725913990; // sqrt(pi)/2
   double x = creal(z), y = cimag(z);
@@ -688,7 +688,7 @@ static const double expa2n2[] = {
 
 /////////////////////////////////////////////////////////////////////////
 
-cmplx FADDEEVA(w)(cmplx z, double relerr)
+DLLEXPORT cmplx FADDEEVA(w)(cmplx z, double relerr)
 {
   if (creal(z) == 0.0)
     return C(FADDEEVA_RE(erfcx)(cimag(z)), 
@@ -1430,7 +1430,7 @@ return 0.97771701335885035464e0 + (0.22000938572830479551e-1 + (0.27951610702682
   return 1.0;
 }
 
-double FADDEEVA_RE(erfcx)(double x)
+DLLEXPORT double FADDEEVA_RE(erfcx)(double x)
 {
   if (x >= 0) {
     if (x > 50) { // continued-fraction expansion is faster
@@ -1872,7 +1872,7 @@ static double w_im_y100(double y100, double x) {
   return NaN;
 }
 
-double FADDEEVA(w_im)(double x)
+DLLEXPORT double FADDEEVA(w_im)(double x)
 {
   if (x >= 0) {
     if (x > 45) { // continued-fraction expansion is faster
